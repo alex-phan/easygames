@@ -1,0 +1,105 @@
+﻿@* Areas/Admin/Views/Products/Index.cshtml *@
+@model IEnumerable<EasyGames.Models.Product>
+
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Products";
+    var q = Context.Request.Query["q"].ToString();
+}
+
+<section class="container py-5">
+    <div class="p-4 p-md-5 rounded-4 shadow-sm mb-4"
+         style="backdrop-filter:saturate(140%) blur(10px);
+                background:linear-gradient(135deg, rgba(129,79,247,.10), rgba(203,157,255,.12));">
+        <div class="d-flex justify-content-between align-items-start">
+            <div>
+                <h1 class="mb-1">Products</h1>
+                <div class="text-muted">Manage product catalog.</div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index"
+                   class="btn btn-outline-secondary">← Back</a>
+
+                <a asp-area="Admin" asp-controller="Products" asp-action="Create"
+                   class="btn btn-primary">+ New Product</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search -->
+    <form method="get"
+          asp-area="Admin" asp-controller="Products" asp-action="Index"
+          class="input-group mb-4">
+        <input name="q" type="text" class="form-control"
+               placeholder="Search title or category" value="@q" />
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+        <a class="btn btn-outline-secondary"
+           asp-area="Admin" asp-controller="Products" asp-action="Index">Clear</a>
+    </form>
+
+    @if (!(Model?.Any() ?? false))
+    {
+        <div class="alert alert-info">No products to display.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th style="width:72px">Image</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var p in Model)
+                    {
+                        <tr>
+                            <td>@p.Id</td>
+
+                            <td>
+                                <div class="border rounded d-inline-flex justify-content-center align-items-center"
+                                     style="width:48px;height:48px;">
+                                    <span class="text-muted">—</span>
+                                </div>
+                            </td>
+
+                            <td>
+                                <a asp-area="Admin" asp-controller="Products" asp-action="Edit" asp-route-id="@p.Id">
+                                    @p.Title
+                                </a>
+                            </td>
+
+                            <td><span class="badge bg-secondary">@p.Category</span></td>
+
+                            <td>@p.Price.ToString("C")</td>
+
+                            @* If your property is StockQty instead of Stock, change to @p.StockQty *@
+                            <td>@p.StockQty</td>
+
+                            <td class="text-end">
+                                <div class="btn-group">
+                                    <a asp-area="Admin" asp-controller="Products" asp-action="Edit" asp-route-id="@p.Id"
+                                       class="btn btn-primary btn-sm">Edit</a>
+
+                                    <form asp-area="Admin" asp-controller="Products" asp-action="Delete" asp-route-id="@p.Id"
+                                          method="post" onsubmit="return confirm('Delete this product?');">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>
+

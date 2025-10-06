@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Order Confirmed";
+    Layout = "/Views/Shared/_Layout.cshtml";
+    var orderNo = (string)ViewBag.OrderNo;
+    var name = (string)ViewBag.OrderName;
+    var email = (string)ViewBag.OrderEmail;
+}
+<section class="container py-5">
+    <div class="p-4 p-md-5 rounded-4 shadow-sm mb-4"
+         style="backdrop-filter:saturate(140%) blur(10px);
+                background:linear-gradient(135deg, rgba(129,79,247,.10), rgba(203,157,255,.12));">
+        <h2 class="mb-1">Thank you, @name!</h2>
+        <div class="text-muted">Your order was placed successfully.</div>
+    </div>
+
+    <div class="rounded-4 border p-4" style="border-color:rgba(129,79,247,.25)">
+        <p class="mb-2"><strong>Order #:</strong> @orderNo</p>
+        @if (!string.IsNullOrWhiteSpace(email))
+        {
+            <p class="mb-0"><strong>Confirmation sent to:</strong> @email</p>
+        }
+        <p class="mt-3 text-muted">This is a demo checkout — no payment was taken.</p>
+
+        <div class="mt-4 d-flex gap-2">
+            <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Continue shopping</a>
+            <a asp-area="" asp-controller="Cart" asp-action="Index" class="btn btn-outline-secondary">View cart</a>
+        </div>
+    </div>
+</section>

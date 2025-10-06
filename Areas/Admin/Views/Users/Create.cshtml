@@ -1,0 +1,62 @@
+﻿@model EasyGames.ViewModels.AdminUserFormVM
+@using EasyGames.Models
+@{
+    ViewData["Title"] = "Admin · New User";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<section class="container py-5">
+    <div class="p-4 p-md-5 rounded-4 shadow-sm mb-4"
+         style="backdrop-filter:saturate(140%) blur(10px);
+                background:linear-gradient(135deg, rgba(129,79,247,.10), rgba(203,157,255,.12));">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="mb-0">Create User</h1>
+            <a asp-area="Admin" asp-controller="Users" asp-action="Index" class="btn btn-outline-secondary">
+                ← Back to list
+            </a>
+        </div>
+    </div>
+
+    <form asp-area="Admin" asp-controller="Users" asp-action="Create"
+          method="post" class="card shadow-sm p-4 vstack gap-3" style="max-width:720px;">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div>
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" class="form-control" autocomplete="email" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="Password" class="form-label"></label>
+            <input asp-for="Password" class="form-control" autocomplete="new-password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="Address" class="form-label"></label>
+            <input asp-for="Address" class="form-control" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="Role" class="form-label"></label>
+            <select asp-for="Role" asp-items="Html.GetEnumSelectList<Role>()" class="form-select"></select>
+            <span asp-validation-for="Role" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Create</button>
+            <a asp-area="Admin" asp-controller="Users" asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+
+    <partial name="_ValidationScriptsPartial" />
+</section>

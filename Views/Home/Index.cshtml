@@ -1,0 +1,153 @@
+﻿@model IEnumerable<EasyGames.Models.Product>
+@{
+    ViewData["Title"] = "Store";
+    Layout = "/Views/Shared/_Layout.cshtml";
+
+    var q = (string)(ViewBag.Q ?? "");
+    var selectedCategory = (string)(ViewBag.Category ?? "");
+    var categories = (IEnumerable<EasyGames.Models.Category>)(ViewBag.Categories
+                      ?? Array.Empty<EasyGames.Models.Category>());
+
+    // Fallback map by Title -> file in /wwwroot/images/products
+    var imgMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+    {
+        ["ASP.NET Core: Secrets of Session"] = "/images/products/aspnet-core-secrets-of-session.png",
+        ["AldiGrocerie Tycoon"] = "/images/products/aldigrocerie-tycoon.png",
+        ["C# in a Weekend"] = "/images/products/csharp-in-a-weekend.png",
+        ["ColesPoints Quest"] = "/images/products/colespoints-quest.png",
+        ["Design Patterns with Rubber Duck Debugging"] = "/images/products/design-patterns-with-rubber-duck-debugging.png",
+        ["DI Snap-Together Kit"] = "/images/products/di-snap-together-kit.png",
+        ["EF Core for Sleep-Deprived Students"] = "/images/products/ef-core-for-sleep-deprived-students.png",
+        ["HIT 339 Thunder Bolt"] = "/images/products/hit-339-thunder-bolt.png",
+        ["HIT339 — Rohan: A Very Cool Teacher (Collector’s Edition)"] = "/images/products/hit339-rohan-very-cool-teacher-collectors-edition.png",
+        ["C# Bear"] = "/images/csharp_Bear.png",
+        ["WolliesPunk"] = "/images/WolliesPunk.png",
+        ["LINQ Cubes"] = "/images/products/linq-cubes.png",
+        ["Middleware Mayhem"] = "/images/products/middleware-mayhem.png",
+        ["Pixel Racer"] = "/images/products/pixel-racer.png",
+        ["Robo Dino"] = "/images/products/robo-dino.png",
+        ["Rubber Duck Debugger"] = "/images/products/rubber-duck-debugger.png",
+        ["Tuesday Late Night Show — Study & Chill"] = "/images/products/tuesday-late-night-show-study-&-chill.png",
+        ["XuXuPillow"] = "/images/products/xuxupillow.png",
+    };
+}
+
+<section class="container py-5">
+
+    <!-- Hero -->
+    <div class="p-4 p-md-5 rounded-4 shadow-sm mb-4"
+         style="backdrop-filter:saturate(140%) blur(10px);
+                background:linear-gradient(135deg, rgba(129,79,247,.10), rgba(203,157,255,.12));">
+        <div class="row align-items-center g-4">
+            <div class="col-md-7">
+                <h1 class="mb-2">Welcome to EasyGames</h1>
+                <p class="text-muted mb-0">Browse and add items to your cart, then check out when you’re ready.</p>
+            </div>
+            <div class="col-md-5 text-md-end">
+                <img src="~/images/easygames-hero.png" alt="EasyGames" class="img-fluid rounded-3" style="max-height:140px;">
+            </div>
+        </div>
+    </div>
+
+    <!-- Search / Filter -->
+    <form method="get" asp-area="" asp-controller="Home" asp-action="Index" class="row g-2 align-items-end mb-3">
+        <div class="col-sm-6 col-lg-5">
+            <label class="form-label mb-1">Search</label>
+            <input name="q" value="@q" class="form-control" placeholder="Title..." />
+        </div>
+        <div class="col-sm-4 col-lg-3">
+            <label class="form-label mb-1">Category</label>
+            <select name="category" class="form-select">
+                <option value="">All</option>
+                @foreach (var c in categories)
+                {
+                    var cName = c.ToString();
+                    <option value="@cName" selected="@(cName == selectedCategory ? "selected" : null)">@cName</option>
+                }
+            </select>
+        </div>
+        <div class="col-sm-2 col-lg-2 d-grid">
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+        <div class="col-sm-12 col-lg-2 d-grid">
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Clear</a>
+        </div>
+    </form>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center p-5 rounded-4 border" style="border-color:rgba(129,79,247,.25)">
+            <h3 class="mb-2">No products match your search</h3>
+            <p class="text-muted mb-0">Try clearing filters or check back later.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+            @foreach (var p in Model)
+            {
+                string? imgUrl = !string.IsNullOrWhiteSpace(p.ImageUrl)
+                ? p.ImageUrl
+                : (imgMap.TryGetValue(p.Title, out var url) ? url : null);
+
+                <div class="col">
+                    <div class="card h-100 shadow-sm rounded-4">
+
+                        <!-- Top thumbnail -->
+                        <div class="product-thumb">
+                            @if (!string.IsNullOrWhiteSpace(imgUrl))
+                            {
+                                <img src="@Url.Content(imgUrl)" alt="@p.Title" loading="lazy"
+                                     class="w-100 h-100" style="object-fit:cover;">
+                            }
+                            else
+                            {
+                                <div class="placeholder w-100 h-100"></div>
+                            }
+                        </div>
+
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h5 class="card-title mb-0">@p.Title</h5>
+                                <span class="badge bg-secondary">@p.Category</span>
+                            </div>
+
+                            <div class="text-muted small mb-3">
+                                Stock: <span class="fw-semibold">@p.StockQty</span>
+                            </div>
+
+                            <div class="mt-auto d-flex justify-content-between align-items-center">
+                                <span class="fs-5 fw-semibold">@p.Price.ToString("C")</span>
+
+                                <!-- Add-to-Cart posts to /Cart/Add -->
+                                <form asp-area="" asp-controller="Cart" asp-action="Add" method="post" class="ms-2">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="productId" value="@p.Id" />
+                                    <input type="hidden" name="qty" value="1" />
+                                    <button class="btn btn-primary" @(p.StockQty <= 0 ? "disabled" : null)>
+                                        Add to Cart
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</section>
+
+<style>
+    .product-thumb {
+        position: relative;
+        overflow: hidden;
+        background: rgba(0,0,0,.05);
+        border-top-left-radius: var(--bs-border-radius-xxl);
+        border-top-right-radius: var(--bs-border-radius-xxl);
+        aspect-ratio: 16/9;
+    }
+
+        .product-thumb .placeholder {
+            background: linear-gradient(135deg, rgba(129,79,247,.06), rgba(91,140,255,.08));
+        }
+</style>
