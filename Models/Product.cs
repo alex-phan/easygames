@@ -4,6 +4,7 @@
 // why: minimal fields to render store cards + admin stock; simple validation to stop bad data early
 // note: enum keeps allowed types fixed (no typos); decimal for money to avoid float rounding
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyGames.Models
 {
@@ -12,11 +13,33 @@ namespace EasyGames.Models
     public class Product
     {
         public int Id { get; set; }
-        [Required, MaxLength(120)] public string Title { get; set; } = "";
+
+        [Required, MaxLength(120)]
+        public string Title { get; set; } = "";
+
         public Category Category { get; set; }
-        [Range(0, 9999)] public decimal Price { get; set; }
-        [Range(0, int.MaxValue)] public int StockQty { get; set; }
+
+        [Range(0, 9999)]
+        public decimal Price { get; set; }
+
+        [Range(0, int.MaxValue)]
+        public int StockQty { get; set; }
+
         public string? ImageUrl { get; set; }
+
+        // --- owner fields (added for A3) ---
+        // cost to compute profit; default 0 for existing rows
+        [Range(0, 999999)]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal CostPrice { get; set; } = 0m;
+
+        // optional supplier note for admin reference
+        [MaxLength(120)]
+        public string? Supplier { get; set; }
+
+        // convenience (not stored) for admin lists
+        [NotMapped] public decimal Margin => Price - CostPrice;                    // quick absolute margin
+        [NotMapped] public decimal MarginPercent => Price <= 0 ? 0 : (Price - CostPrice) / Price * 100m; // quick %
     }
 }
 

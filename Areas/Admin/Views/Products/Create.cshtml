@@ -18,6 +18,8 @@
     </div>
 
     <form method="post" asp-area="Admin" asp-controller="Products" asp-action="Create" class="row g-3">
+        @Html.AntiForgeryToken()
+
         <div class="col-md-8">
             <label class="form-label">Title</label>
             <input name="Title" class="form-control" placeholder="e.g., C# Bear" />
@@ -34,8 +36,24 @@
         </div>
 
         <div class="col-md-4">
+            <label class="form-label">Cost</label>
+            <input name="CostPrice" type="number" step="0.01" class="form-control" placeholder="0.00" />
+        </div>
+
+        <div class="col-md-4">
             <label class="form-label">Stock</label>
-            <input name="Stock" type="number" class="form-control" placeholder="0" />
+            <!-- note to self: property is StockQty (not Stock) -->
+            <input name="StockQty" type="number" class="form-control" placeholder="0" />
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Supplier</label>
+            <input name="Supplier" class="form-control" placeholder="optional supplier name" />
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Image URL</label>
+            <input name="ImageUrl" class="form-control" placeholder="/images/products/..." />
         </div>
 
         <div class="col-12 d-flex gap-2">
@@ -44,4 +62,5 @@
         </div>
     </form>
 </section>
+
 
