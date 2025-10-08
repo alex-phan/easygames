@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EasyGames.Data
 {
-     
+
     /// <summary>
     /// seed demo data and owner; apply optional one-time Owner fixups via env vars (see Notepad seed1)
     /// env keys (set → run once → clear):
@@ -28,7 +28,7 @@ namespace EasyGames.Data
         {
             await _db.Database.MigrateAsync();
 
-            // Canonical Owner email can be overridden so we don't recreate an old address later.
+            // canonical Owner email can be overridden so we don't recreate an old address later.
             var ownerEmailPrimary = (Environment.GetEnvironmentVariable("EG_OWNER_EMAIL_PRIMARY")
                                      ?? "owner@easygames.local").Trim().ToLowerInvariant();
 
@@ -118,6 +118,14 @@ namespace EasyGames.Data
                 {
                     if (string.IsNullOrWhiteSpace(p.ImageUrl) && img.TryGetValue(p.Title, out var url))
                         p.ImageUrl = url;
+
+                    // --- new: owner fields backfill after migration ---
+                    // note to self: keep cost non-negative and default to 0 for older rows
+                    if (p.CostPrice < 0m) p.CostPrice = 0m;
+
+                    // note to self: normalise empty supplier strings to null for cleaner display
+                    if (p.Supplier != null && string.IsNullOrWhiteSpace(p.Supplier))
+                        p.Supplier = null;
                 }
 
                 await _db.SaveChangesAsync();
@@ -232,13 +240,17 @@ namespace EasyGames.Data
                 Category = category,
                 Price = price,
                 StockQty = stock,
-                ImageUrl = string.IsNullOrWhiteSpace(imageUrl) ? null : imageUrl
+                ImageUrl = string.IsNullOrWhiteSpace(imageUrl) ? null : imageUrl,
+
+                // note to self: explicit owner fields for clarity (default cost 0, no supplier)
+                CostPrice = 0m,
+                Supplier = null
             });
         }
 
         /// <summary>
         /// One-time Owner fixups via environment variables.
-        
+
         private async Task ApplyOwnerFixupsAsync(string ownerEmailPrimary)
         {
             string fromEmail = (Environment.GetEnvironmentVariable("EG_BOOTSTRAP_OWNER_FROM")

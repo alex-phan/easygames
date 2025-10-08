@@ -52,8 +52,12 @@
                         <th style="width:72px">Image</th>
                         <th>Title</th>
                         <th>Category</th>
-                        <th>Price</th>
-                        <th>Stock</th>
+                        <th class="text-end">Price</th>
+                        <th class="text-end">Cost</th>        @* new: CostPrice *@
+                        <th class="text-end">Margin</th>      @* new: Price - CostPrice *@
+                        <th class="text-end">Margin%</th>     @* new: (Price-Cost)/Price *@
+                        <th class="text-end">Stock</th>
+                        <th>Supplier</th>                     @* new: Supplier note *@
                         <th class="text-end">Actions</th>
                     </tr>
                 </thead>
@@ -79,10 +83,22 @@
 
                             <td><span class="badge bg-secondary">@p.Category</span></td>
 
-                            <td>@p.Price.ToString("C")</td>
+                            <td class="text-end">@p.Price.ToString("C")</td>
 
-                            @* If your property is StockQty instead of Stock, change to @p.StockQty *@
-                            <td>@p.StockQty</td>
+                            @* new: internal cost used for margin *@
+                            <td class="text-end">@p.CostPrice.ToString("C")</td>
+
+                            @* new: absolute margin *@
+                            <td class="text-end">@p.Margin.ToString("C")</td>
+
+                            @* new: percentage margin (one decimal) *@
+                            <td class="text-end">@p.MarginPercent.ToString("0.0")%</td>
+
+                            @* If the property is StockQty (it is), keep as-is *@
+                            <td class="text-end">@p.StockQty</td>
+
+                            @* new: show supplier or dash *@
+                            <td>@(string.IsNullOrWhiteSpace(p.Supplier) ? "-" : p.Supplier)</td>
 
                             <td class="text-end">
                                 <div class="btn-group">
@@ -91,6 +107,7 @@
 
                                     <form asp-area="Admin" asp-controller="Products" asp-action="Delete" asp-route-id="@p.Id"
                                           method="post" onsubmit="return confirm('Delete this product?');">
+                                        @Html.AntiForgeryToken()
                                         <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
                                     </form>
                                 </div>
@@ -102,4 +119,3 @@
         </div>
     }
 </section>
-

@@ -47,9 +47,30 @@
         </div>
 
         <div class="col-md-4">
+            <label asp-for="CostPrice" class="form-label"></label> @* internal cost for margin *@
+            <input asp-for="CostPrice" class="form-control" />
+            <span asp-validation-for="CostPrice" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4">
             <label asp-for="StockQty" class="form-label"></label>
             <input asp-for="StockQty" class="form-control" />
             <span asp-validation-for="StockQty" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="Supplier" class="form-label"></label> @* optional supplier note *@
+            <input asp-for="Supplier" class="form-control" />
+            <span asp-validation-for="Supplier" class="text-danger"></span>
+        </div>
+
+        <div class="col-12 d-flex align-items-center gap-3">
+            <div class="text-muted">
+                @* quick read-only margin helpers for a sanity check *@
+                <strong>Margin:</strong> @Model.Margin.ToString("C")
+                &nbsp;|&nbsp;
+                <strong>Margin%:</strong> @Model.MarginPercent.ToString("0.0")%
+            </div>
         </div>
 
         <div class="col-12 d-flex gap-2">
@@ -63,4 +84,3 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
-
