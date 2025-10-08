@@ -49,6 +49,9 @@
 
                     @if (User?.Identity?.IsAuthenticated ?? false)
                     {
+                        @* quick access to customer order history added here *@
+                        <a class="btn btn-sm btn-outline-light" asp-area="" asp-controller="Orders" asp-action="My">My Orders</a>
+
                         <span class="text-white-50 small">Hello @User.Identity!.Name</span>
                         <a class="btn btn-sm btn-outline-light" asp-area="" asp-controller="Account" asp-action="ChangePassword">Change Password</a>
 

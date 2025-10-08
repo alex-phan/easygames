@@ -69,7 +69,10 @@ namespace EasyGames.Data
                 ["Tuesday Late Night Show — Study & Chill"] = "/images/products/tuesday-late-night-show-study-&-chill.png",
                 ["XuXuPillow"] = "/images/products/xuxupillow.png",
                 ["WolliesPunk"] = "/images/WolliesPunk.png",
-                ["C# Bear"] = "/images/CSharp_Bear.png"
+                ["C# Bear"] = "/images/CSharp_Bear.png",
+
+                // note: animated product uses the GIF in /wwwroot/animations
+                
             };
 
             // If I already have products, clean + backfill only (do NOT reseed)
@@ -79,7 +82,7 @@ namespace EasyGames.Data
                 var removeTitles = new[]
                 {
                     "HIT339 — Rohan: A Very Nice Teacher (Collector’s Edition)", // duplicate I decided to drop but it did not worked 
-                    "Mildeware Mayhem" // typo of "Middleware"I fix it later 
+                     // typo of "Middleware"I fix it later 
                 };
 
                 var toRemove = await _db.Products
@@ -120,7 +123,7 @@ namespace EasyGames.Data
                         p.ImageUrl = url;
 
                     // --- new: owner fields backfill after migration ---
-                    // note to self: keep cost non-negative and default to 0 for older rows
+                    // note: keep cost non-negative and default to 0 for older rows
                     if (p.CostPrice < 0m) p.CostPrice = 0m;
 
                     // note to self: normalise empty supplier strings to null for cleaner display
@@ -160,8 +163,8 @@ namespace EasyGames.Data
             EnsureProduct("ColesPoints Quest",
                 Category.Game, 27.49m, 22, img.GetValueOrDefault("ColesPoints Quest"));
 
-            EnsureProduct("Mildeware Mayhem",
-                Category.Game, 31.00m, 14, img.GetValueOrDefault("Mildeware Mayhem"));
+            
+              
 
             EnsureProduct("C# Bear",
                 Category.Toy, 12.50m, 25, img.GetValueOrDefault("C# Bear"));
@@ -186,6 +189,8 @@ namespace EasyGames.Data
 
             EnsureProduct("Robo Dino",
                 Category.Toy, 29.50m, 20, img.GetValueOrDefault("Robo Dino"));
+
+            
 
             await _db.SaveChangesAsync();
         }
