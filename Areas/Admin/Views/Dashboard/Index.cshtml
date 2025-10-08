@@ -17,7 +17,6 @@
     <div class="row g-3">
         <div class="col-sm-6 col-lg-4">
             <a asp-area="Admin" asp-controller="Products" asp-action="Index"
-
                class="text-decoration-none d-block p-4 rounded-4 border"
                style="border-color: rgba(129,79,247,.25);">
                 <div class="fs-5 mb-2">Manage Products</div>
@@ -38,6 +37,18 @@
                 <div class="fs-5 mb-2">Manage Users</div>
                 <div class="small text-muted">
                     @((int)(ViewBag.UserCount ?? 0)) user(s)
+                </div>
+            </a>
+        </div>
+
+        <!-- new: direct link to orders list (keeps same card style) -->
+        <div class="col-sm-6 col-lg-4">
+            <a asp-area="Admin" asp-controller="Orders" asp-action="Index"
+               class="text-decoration-none d-block p-4 rounded-4 border"
+               style="border-color: rgba(129,79,247,.25);">
+                <div class="fs-5 mb-2">Manage Orders</div>
+                <div class="small text-muted">
+                    View recent orders, totals and profit.
                 </div>
             </a>
         </div>

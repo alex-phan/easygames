@@ -43,6 +43,9 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<DataSeeder>();
 
+// checkout DI see Notepad n3.c
+builder.Services.AddScoped<ICheckoutService, CheckoutService>();
+
 var app = builder.Build();
 
 // seed db
