@@ -1,10 +1,10 @@
 **Email Groups (Admin-only) — Implemented by Veasna**
 
 **What it does**
-•	Adds an Email Groups feature for admins (Owner role).
-•	Admin can enter Subject + Message, choose Send to all users or target by Tier (optional).
-•	Emails are rendered with a Razor template (falls back to simple HTML if the template isn’t present).
-•	Works with real SMTP when configured; otherwise runs in simulated mode and shows a clear “Simulated send” status so the flow still demos cleanly.
+- Adds an Email Groups feature for admins (Owner role).
+- Admin can enter Subject + Message, choose Send to all users or target by Tier (optional).
+- Emails are rendered with a Razor template (falls back to simple HTML if the template isn’t present).
+- Works with real SMTP when configured; otherwise runs in simulated mode and shows a clear “Simulated send” status so the flow still demos cleanly.
 
 **How it appears in the app**
 •	After logging in as Owner, the navbar shows an Email Groups button.
