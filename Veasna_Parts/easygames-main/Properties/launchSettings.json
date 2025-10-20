@@ -1,0 +1,33 @@
+{
+  "profiles": {
+    "EasyGames": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "EG_OWNER_EMAIL_PRIMARY": "owner.admin@easygames.local",
+        "EG_BOOTSTRAP_OWNER_FROM": "owner@easygames.local",
+        "EG_BOOTSTRAP_OWNER_TO": "owner.admin@easygames.local",
+        "EG_BOOTSTRAP_SET_OWNER_PASSWORD": "GiveThisToLecturer123!"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7148;http://localhost:5148"
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:51783/",
+      "sslPort": 44375
+    }
+  }
+}
