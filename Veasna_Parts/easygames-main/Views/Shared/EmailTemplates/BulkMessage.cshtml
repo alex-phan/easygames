@@ -1,9 +1,0 @@
-﻿@{
-    Layout = "/Views/Shared/EmailTemplates/BaseLayout.cshtml";
-
-    // Extract "Title" and "Body" from the anonymous model
-    var title = (string)(ViewData.Model?.GetType().GetProperty("Title")?.GetValue(ViewData.Model) ?? "");
-    var body = (string)(ViewData.Model?.GetType().GetProperty("Body")?.GetValue(ViewData.Model) ?? "");
-}
-<h2 style="margin-top:0;">@title</h2>
-<p>@Html.Raw(body)</p>

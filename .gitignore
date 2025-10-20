@@ -482,3 +482,19 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# --- EasyGames local additions (to prevent duplicate trees & local DB files) ---
+
+# SQLite local database files (keep them out of git)
+*.db
+*.db-wal
+*.db-shm
+
+# Block accidental nested project drops / teammate archives
+Veasna_Parts/
+**/easygames-main/
+**/easygames*/
+**/backup*/
+**/zips*/
+**/*.zip
+**/*.rar
