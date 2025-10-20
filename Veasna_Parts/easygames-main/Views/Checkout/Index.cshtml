@@ -1,0 +1,93 @@
+﻿@model EasyGames.ViewModels.CheckoutVM
+@{
+    ViewData["Title"] = "Checkout";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<section class="container py-5">
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="p-4 rounded-4 shadow-sm"
+                 style="backdrop-filter:saturate(140%) blur(10px);
+                        background:linear-gradient(135deg, rgba(129,79,247,.10), rgba(203,157,255,.12));">
+                <h2 class="mb-0">Checkout</h2>
+                <div class="text-muted">Confirm your details and place the order.</div>
+            </div>
+
+            <form asp-action="Index" method="post" class="rounded-4 border p-4 mt-4" style="border-color:rgba(129,79,247,.25)">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="FullName" class="form-label"></label>
+                    <input asp-for="FullName" class="form-control" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Address" class="form-label"></label>
+                    <textarea asp-for="Address" rows="2" class="form-control"></textarea>
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Notes" class="form-label"></label>
+                    <textarea asp-for="Notes" rows="3" class="form-control"></textarea>
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <a asp-area="" asp-controller="Cart" asp-action="Index" class="btn btn-outline-secondary">Back to Cart</a>
+                    <button class="btn btn-primary" type="submit">Place Order</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="rounded-4 border p-3 p-md-4" style="border-color:rgba(129,79,247,.25)">
+                <h5 class="mb-3">Order summary</h5>
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th class="text-end">Qty</th>
+                                <th class="text-end">Price</th>
+                                <th class="text-end">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var it in Model.Items)
+                            {
+                                <tr>
+                                    <td>@it.Title</td>
+                                    <td class="text-end">@it.Qty</td>
+                                    <td class="text-end">@it.Price.ToString("C")</td>
+                                    <td class="text-end">@it.LineTotal.ToString("C")</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="3" class="text-end">Subtotal:</th>
+                                <th class="text-end">@Model.Subtotal.ToString("C")</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="text-muted small">Tax and shipping not included (demo).</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
