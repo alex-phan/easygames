@@ -55,6 +55,15 @@
                         <span class="text-white-50 small">Hello @User.Identity!.Name</span>
                         <a class="btn btn-sm btn-outline-light" asp-area="" asp-controller="Account" asp-action="ChangePassword">Change Password</a>
 
+                        @* Owner-only Email Groups button (added) *@
+                        @if (User.IsInRole("Owner"))
+                        {
+                            <a class="btn btn-sm btn-outline-info"
+                               asp-area="Admin" asp-controller="Emails" asp-action="Compose">
+                                Email Groups
+                            </a>
+                        }
+
                         @* Use  helper endpoint: POST + antiforgery, ALWAYS redirects to Login *@
                         <form asp-area=""
                               asp-controller="AuthHelper"
@@ -96,6 +105,3 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
-
-
-

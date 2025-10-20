@@ -46,6 +46,29 @@ builder.Services.AddScoped<DataSeeder>();
 // checkout DI see Notepad n3.c
 builder.Services.AddScoped<ICheckoutService, CheckoutService>();
 
+// ----------------Vaesna raw GitHub (features) Email service DI (real SMTP if configured; otherwise simulated) ----------------
+// expects Services/SmtpOptions.cs, IEmailService.cs, SmtpEmailService.cs, NullEmailService.cs
+var smtpHost = builder.Configuration["Smtp:Host"];
+var smtpUser = builder.Configuration["Smtp:Username"];
+var smtpPass = builder.Configuration["Smtp:Password"];
+var smtpFrom = builder.Configuration["Smtp:FromEmail"];
+
+if (!string.IsNullOrWhiteSpace(smtpHost) &&
+    !string.IsNullOrWhiteSpace(smtpUser) &&
+    !string.IsNullOrWhiteSpace(smtpPass) &&
+    !string.IsNullOrWhiteSpace(smtpFrom))
+{
+    builder.Services.Configure<SmtpOptions>(builder.Configuration.GetSection("Smtp"));
+    builder.Services.AddScoped<IEmailService, SmtpEmailService>();
+}
+else
+{
+    builder.Services.AddSingleton<IEmailService, NullEmailService>();
+}
+// -----------------------------------------------------------------------------------------------
+
+
+
 var app = builder.Build();
 
 // seed db
