@@ -29,8 +29,11 @@ namespace EasyGames.Data
             await _db.Database.MigrateAsync();
 
             // canonical Owner email can be overridden so we don't recreate an old address later.
+            // chatGPT Prompt BOOT-002 start
+            // Purpose: env-var name used to set canonical Owner email for one-time bootstrap/ownership.
             var ownerEmailPrimary = (Environment.GetEnvironmentVariable("EG_OWNER_EMAIL_PRIMARY")
                                      ?? "owner@easygames.local").Trim().ToLowerInvariant();
+            // chatGPT Prompt BOOT-002 end
 
             // --- users ---
             await EnsureOwnerAsync(
@@ -72,7 +75,7 @@ namespace EasyGames.Data
                 ["C# Bear"] = "/images/CSharp_Bear.png",
 
                 // note: animated product uses the GIF in /wwwroot/animations
-                
+
             };
 
             // If I already have products, clean + backfill only (do NOT reseed)
@@ -163,8 +166,8 @@ namespace EasyGames.Data
             EnsureProduct("ColesPoints Quest",
                 Category.Game, 27.49m, 22, img.GetValueOrDefault("ColesPoints Quest"));
 
-            
-              
+
+
 
             EnsureProduct("C# Bear",
                 Category.Toy, 12.50m, 25, img.GetValueOrDefault("C# Bear"));
@@ -190,7 +193,7 @@ namespace EasyGames.Data
             EnsureProduct("Robo Dino",
                 Category.Toy, 29.50m, 20, img.GetValueOrDefault("Robo Dino"));
 
-            
+
 
             await _db.SaveChangesAsync();
         }
@@ -258,10 +261,13 @@ namespace EasyGames.Data
 
         private async Task ApplyOwnerFixupsAsync(string ownerEmailPrimary)
         {
+            // chatGPT Prompt BOOT-002 start (added to report)
+            // Purpose: env-var names used for one-time Owner bootstrap (promote/rename/set password).
             string fromEmail = (Environment.GetEnvironmentVariable("EG_BOOTSTRAP_OWNER_FROM")
                                ?? ownerEmailPrimary).Trim().ToLowerInvariant();
             string? toEmail = Environment.GetEnvironmentVariable("EG_BOOTSTRAP_OWNER_TO")?.Trim().ToLowerInvariant();
             string? newPassword = Environment.GetEnvironmentVariable("EG_BOOTSTRAP_SET_OWNER_PASSWORD");
+            // chatGPT Prompt BOOT-002 end
 
             // Find the "from" account (or the "to" account if it's already been renamed)
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == fromEmail);

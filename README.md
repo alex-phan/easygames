@@ -57,6 +57,7 @@ Hi, this is my **HIT339 Assessment 2** project. Below is my README and overview 
 - **Purchase items:** Implemented via **Cart** and **Checkout**. Users can add to cart, adjust quantities, and complete a demo checkout. An **Order** with code `EG-YYYYMMDD-####` is created and the cart is cleared.
 
 > **Note:** Checkout is intentionally a **demo flow** (no payment gateway), appropriate for this assessment.
+## note## “All product/diagram images in this coursework are **AI-generated (Google Nano Banana, 2025)**
 
 ---
 

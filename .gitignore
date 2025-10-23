@@ -498,3 +498,8 @@ Veasna_Parts/
 **/zips*/
 **/*.zip
 **/*.rar
+ 
+# Local SQLite runtime DBs 
+*.db 
+*.db-shm 
+*.db-wal

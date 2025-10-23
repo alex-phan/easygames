@@ -24,7 +24,7 @@ namespace EasyGames.Services
 
         public async Task<Order> PlaceOrderAsync(int userId, IEnumerable<OrderLineInput> lines, decimal tax, CancellationToken ct = default)
         {
-            // guard rails: no nulls or empties
+            // guard rails: no no nulls or empties
             var lineList = lines?.ToList() ?? throw new ArgumentNullException(nameof(lines));
             if (lineList.Count == 0) throw new InvalidOperationException("Cart is empty.");
 
@@ -54,7 +54,7 @@ namespace EasyGames.Services
                 Tax = Math.Round(tax, 2)
             };
 
-            // build items with snapshot prices/costs, and decrement stock
+            // build items with snapshot prices/costs, and decrementt stock
             foreach (var l in lineList)
             {
                 var p = products[l.ProductId];
