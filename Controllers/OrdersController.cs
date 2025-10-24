@@ -1,14 +1,16 @@
 ﻿// simple orders history page + quick tier calc (customer) See Readme
-using System.Security.Claims;
+using EasyGames.Data;
+using EasyGames.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using EasyGames.Data;
+using System.Security.Claims;
 
 namespace EasyGames.Controllers
 {
-    public class OrdersController(ApplicationDbContext db) : Controller
+    public class OrdersController(ApplicationDbContext db, ITierService tiers) : Controller
     {
         private readonly ApplicationDbContext _db = db;
+        private readonly ITierService _tiers = tiers;
 
         [HttpGet]
         public async Task<IActionResult> My()
@@ -30,15 +32,8 @@ namespace EasyGames.Controllers
                 .OrderByDescending(o => o.Id)
                 .ToListAsync();
 
-            // quick lifetime profit -> tier (temporary here; move to service later)
-            var lifetimeProfit = orders.Sum(o => o.Profit);
-            var tier = lifetimeProfit switch
-            {
-                < 100m => "Bronze",
-                < 500m => "Silver",
-                < 2000m => "Gold",
-                _ => "Platinum"
-            };
+            // define tier + lifetime profit by using the tier service (Alex Phan)
+            var (tier, lifetimeProfit) = await _tiers.GetTierForUserAsync(userId);
 
             ViewBag.Tier = tier;
             ViewBag.LifetimeProfit = lifetimeProfit;

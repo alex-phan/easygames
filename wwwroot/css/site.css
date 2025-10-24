@@ -189,3 +189,23 @@ footer.footer {
         height: 100%;
         object-fit: cover;
     }
+
+.badge-bronze {
+    background: linear-gradient(135deg, #a05f22 0%, #cd7f32 48%, #e6a35f 100%);
+    color: #1a1a1a;
+}
+
+.badge-silver {
+    background: linear-gradient(135deg, #9ea2a6 0%, #c0c0c0 48%, #e6e6e6 100%);
+    color: #1a1a1a;
+}
+
+.badge-gold {
+    background: linear-gradient(135deg, #c39600 0%, #ffd700 48%, #ffec7a 100%);
+    color: #1a1a1a;
+}
+
+.badge-platinum {
+    background: linear-gradient(135deg, #c3c7cc 0%, #e5e4e2 48%, #f3f3f2 100%);
+    color: #1a1a1a;
+}

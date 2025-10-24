@@ -41,6 +41,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<ITierService, TierService>(); // Tier Service (Alex Phan)
 builder.Services.AddScoped<DataSeeder>();
 
 // checkout DI see Notepad n3.c

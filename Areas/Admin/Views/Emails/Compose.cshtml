@@ -1,4 +1,5 @@
 ﻿@model EasyGames.Areas.Admin.ViewModels.EmailGroupVM
+@using EasyGames.Models
 
 @{
     Layout = "/Views/Shared/_Layout.cshtml";
@@ -34,14 +35,11 @@
                         <label class="form-check-label" asp-for="SendToAll">Send to all users</label>
                     </div>
 
+                    @* Dynamically fetch user tiers and print a select. (Alex Phan) *@
                     <div class="ms-auto" style="min-width: 220px;">
                         <label class="form-label mb-1">Or choose a tier</label>
-                        <select asp-for="TargetTier" class="form-select">
+                        <select asp-for="TargetTier" class="form-select" asp-items="Html.GetEnumSelectList<UserTier>()">
                             <option value="">(none)</option>
-                            <option>Bronze</option>
-                            <option>Silver</option>
-                            <option>Gold</option>
-                            <option>Platinum</option>
                         </select>
                     </div>
                 </div>
