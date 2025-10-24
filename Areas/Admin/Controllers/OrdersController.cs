@@ -3,6 +3,7 @@ using EasyGames.Data;
 using EasyGames.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text; // added usage to allow the program to use stringbuilder - vendel
 
 namespace EasyGames.Areas.Admin.Controllers
 {
@@ -23,6 +24,40 @@ namespace EasyGames.Areas.Admin.Controllers
 
             return View(orders);
         }
+
+
+// below is the code that links back to index.cshtml, will allow the export to csv button to work - vendel
+        [HttpGet]
+public async Task<IActionResult> ExportToCsv()
+{
+    // used to fetch user orders, items and data - vendel
+    var orders = await _db.Orders
+        .Include(o => o.Items)
+        .Include(o => o.User)
+        .ToListAsync();
+
+    // stringbuilder is used to create CSV lines - vendel
+    var csv = new StringBuilder();
+    csv.AppendLine("Date,OrderId,Items,Subtotal,Profit");
+
+    foreach (var o in orders)
+    {
+        var date = o.CreatedAt.ToString("yyyy-MM-dd HH:mm");
+        var orderId = $"EG-{o.Id:000000}";
+        var items = o.Items.Count;
+        var subtotal = o.Subtotal.ToString("F2");
+        var profit = o.Profit.ToString("F2");
+
+        csv.AppendLine($"{date},{orderId},{items},{subtotal},{profit}");
+    }
+
+    var bytes = Encoding.UTF8.GetBytes(csv.ToString());
+    var fileName = $"orders_{DateTime.UtcNow:yyyyMMdd_HHmm}.csv";
+
+    // creates a downloadable file with the related CSV data - vendel
+    return File(bytes, "text/csv", fileName);
+}
+
 
         [HttpGet]
         public async Task<IActionResult> Details(int id)
